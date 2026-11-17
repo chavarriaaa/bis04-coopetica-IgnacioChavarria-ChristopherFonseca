@@ -1,0 +1,117 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package modelo {
+  class Sucursal {
+    - codigo: String
+    - nombre: String
+    + toString(): String
+  }
+
+  class Asociado {
+    - cedula: String
+    - nombre: String
+    - numeroAsociado: String
+    - saldoAportes: double
+    + depositarAporte(monto: double): void
+    + retirarAporte(monto: double): void
+    + toString(): String
+    + equals(o: Object): boolean
+  }
+
+  abstract class Cuenta {
+    - numeroCuenta: String
+    - saldo: double
+    - fechaApertura: LocalDate
+    - abierta: boolean
+    + depositar(monto: double): void
+    + retirar(monto: double): void
+    + {abstract} cobrarComisiones(): double
+    + toString(): String
+  }
+
+  class CuentaAhorro {
+    - tasaInteres: double
+    + cobrarComisiones(): double
+  }
+
+  class CuentaCorriente {
+    - comisionMensual: double
+    + cobrarComisiones(): double
+  }
+
+  class Prestamo {
+    - monto: double
+    - plazoMeses: int
+    - activo: boolean
+    + generarCuotas(politica: PoliticaInteres): void
+    + anular(): void
+    + toString(): String
+  }
+
+  class Cuota {
+    - numero: int
+    - monto: double
+    - fechaVencimiento: LocalDate
+    - pagada: boolean
+    + marcarPagada(): void
+    + toString(): String
+  }
+}
+
+package logica {
+  class Cooperativa {
+    - nombre: String
+    + registrarSucursal(s: Sucursal): void
+    + registrarAsociado(a: Asociado): void
+    + buscarAsociado(cedula: String): Asociado
+    + abrirCuenta(cedula: String, c: Cuenta): void
+    + solicitarPrestamo(cedula: String, monto: double, plazo: int): Prestamo
+    + reporteAsociadosPorSucursal(): String
+    + reporteEstadoPrestamos(): String
+  }
+
+  interface PoliticaInteres {
+    + calcular(monto: double, plazoMeses: int): double
+  }
+
+  class InteresSimple {
+    + calcular(monto: double, plazoMeses: int): double
+  }
+
+  class InteresCompuesto {
+    + calcular(monto: double, plazoMeses: int): double
+  }
+}
+
+package datos {
+  class GestorPersistencia {
+    - {static} instancia: GestorPersistencia
+    - GestorPersistencia()
+    + {static} getInstancia(): GestorPersistencia
+    + guardarTodo(c: Cooperativa): void
+    + cargarTodo(): Cooperativa
+  }
+}
+
+' Agregacion
+Cooperativa "1" o-- "*" Sucursal
+
+' Asociaciones
+Sucursal "1" -- "*" Asociado
+Asociado "1" -- "*" Cuenta
+Asociado "1" -- "0..1" Prestamo
+
+' Composicion
+Prestamo "1" *-- "1..*" Cuota
+
+' Generalizacion
+Cuenta <|-- CuentaAhorro
+Cuenta <|-- CuentaCorriente
+
+' Dependencias y realizaciones
+Prestamo ..> PoliticaInteres
+InteresSimple ..|> PoliticaInteres
+InteresCompuesto ..|> PoliticaInteres
+GestorPersistencia ..> Cooperativa
+@enduml
