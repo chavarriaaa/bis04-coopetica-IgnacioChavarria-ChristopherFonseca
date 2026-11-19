@@ -25,8 +25,8 @@ CoopeTica R.L. es una cooperativa de ahorro y crédito con varias sucursales. Es
 ## Estado del proyecto
 | Módulo | Estado |
 |---|---|
-| Sucursales | Pendiente |
-| Asociados | Pendiente |
+| Sucursales | en progreso |
+| Asociados | en progreso |
 | Aportes | Pendiente |
 | Cuentas | Pendiente |
 | Préstamos | Pendiente |
