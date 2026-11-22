@@ -2,7 +2,8 @@ package logica;
 
 import java.util.ArrayList;
 import modelo.Sucursal;
-
+import java.util.Iterator; 
+import modelo.Asociado;
 /**
  * Coordina las operaciones de CoopeTica R.L. Mantiene en memoria las
  * listas de sucursales y asociados.
@@ -11,7 +12,7 @@ public class Cooperativa {
 
     private final String nombre;
     private final ArrayList<Sucursal> sucursales;
-
+    private final ArrayList<Asociado> asociados;
     /**
      * Crea una cooperativa sin sucursales.
      *
@@ -24,6 +25,7 @@ public class Cooperativa {
         }
         this.nombre = nombre.trim();
         this.sucursales = new ArrayList<>();
+        this.asociados = new ArrayList<>();        
     }
 
     /**
@@ -74,5 +76,50 @@ public class Cooperativa {
      */
     public ArrayList<Sucursal> listarSucursales() {
         return new ArrayList<>(sucursales);
+    }
+       /**
+     * Registra un asociado. Su sucursal debe estar registrada y no puede
+     * haber otro asociado con la misma cédula.
+     *
+     * @param a asociado a registrar; no puede ser nulo
+     * @throws IllegalArgumentException si es nulo, si su sucursal no está
+     *         registrada o si la cédula ya existe
+     */
+    public void registrarAsociado(Asociado a) {
+        if (a == null) {
+            throw new IllegalArgumentException("El asociado es obligatorio.");
+        }
+        if (buscarSucursal(a.getSucursal().getCodigo()) == null) {
+            throw new IllegalArgumentException("La sucursal del asociado no está registrada.");
+        }
+        if (buscarAsociado(a.getCedula()) != null) {
+            throw new IllegalArgumentException("Ya existe un asociado con esa cédula.");
+        }
+        asociados.add(a);
+    }
+    /**
+     * Busca un asociado por su cédula.
+     *
+     * @param cedula cédula a buscar
+     * @return el asociado, o null si no existe
+     */
+    public Asociado buscarAsociado(String cedula) {
+        Iterator<Asociado> it = asociados.iterator();
+        while (it.hasNext()) {
+            Asociado a = it.next();
+            if (a.getCedula().equals(cedula)) {
+                return a;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Lista todos los asociados.
+     *
+     * @return una copia de la lista de asociados
+     */
+    public ArrayList<Asociado> listarAsociados() {
+        return new ArrayList<>(asociados);
     }
 }
