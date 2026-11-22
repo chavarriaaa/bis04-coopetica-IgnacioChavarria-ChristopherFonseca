@@ -58,4 +58,19 @@ public class CooperativaTest {
                 new Sucursal("S99", "Fantasma"));
         assertThrows(IllegalArgumentException.class, () -> c.registrarAsociado(a));
     }
+    
+    @Test
+    public void depositarAporteActualizaElSaldo() {
+        Cooperativa c = crearSucursal();
+        Sucursal s = c.buscarSucursal("S01");
+        c.registrarAsociado(new Asociado("1-1111-1111", "Ana Mora", "A001", s));
+        c.depositarAporte("1-1111-1111", 3000);
+        assertEquals(3000, c.buscarAsociado("1-1111-1111").getSaldoAportes(), 0.001);
+    }
+
+    @Test
+    public void aporteAUnAsociadoInexistenteFalla() {
+        Cooperativa c = crearSucursal();
+        assertThrows(IllegalArgumentException.class, () -> c.depositarAporte("9-9999-9999", 100));
+    }
 }
