@@ -122,4 +122,36 @@ public class Cooperativa {
     public ArrayList<Asociado> listarAsociados() {
         return new ArrayList<>(asociados);
     }
+    
+    /**
+     * Deposita un aporte a un asociado.
+     *
+     * @param cedula cédula del asociado
+     * @param monto monto a depositar; debe ser positivo
+     * @throws IllegalArgumentException si el asociado no existe o el monto
+     *         no es válido
+     */
+    public void depositarAporte(String cedula, double monto) {
+        obtenerAsociado(cedula).depositarAporte(monto);
+    }
+
+    /**
+     * Retira un aporte de un asociado.
+     *
+     * @param cedula cédula del asociado
+     * @param monto monto a retirar; positivo y no mayor al saldo
+     * @throws IllegalArgumentException si el asociado no existe o el monto
+     *         no es válido
+     */
+    public void retirarAporte(String cedula, double monto) {
+        obtenerAsociado(cedula).retirarAporte(monto);
+    }
+
+    private Asociado obtenerAsociado(String cedula) {
+        Asociado a = buscarAsociado(cedula);
+        if (a == null) {
+            throw new IllegalArgumentException("No existe un asociado con esa cédula.");
+        }
+        return a;
+    }
 }
