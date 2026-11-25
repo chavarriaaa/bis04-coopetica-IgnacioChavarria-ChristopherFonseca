@@ -29,7 +29,6 @@ public class InteresCompuesto implements PoliticaInteres {
         double montoFinal = monto * Math.pow(1.0 + tasaMensual, plazoMeses);
         return montoFinal - monto;
     }
-
     @Override
     public String toString() {
         return "InteresCompuesto{}";
