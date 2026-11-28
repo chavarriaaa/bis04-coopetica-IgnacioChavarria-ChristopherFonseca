@@ -7,17 +7,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import org.junit.Test;
 
-
-
 /**
  * Pruebas de la clase Cooperativa.
  */
 public class CooperativaTest {
-     private Cooperativa crearSucursal(){
-     Cooperativa c = new Cooperativa ("Coopetica");
-     c.registrarSucursal(new Sucursal("S01","Centro"));
-     return c;
-     }
+
+    private Cooperativa crearSucursal() {
+        Cooperativa c = new Cooperativa("Coopetica");
+        c.registrarSucursal(new Sucursal("S01", "Centro"));
+        return c;
+    }
 
     @Test
     public void registrarYBuscarSucursal() {
@@ -34,14 +33,16 @@ public class CooperativaTest {
         Sucursal repetida = new Sucursal("S01", "Otra");
         assertThrows(IllegalArgumentException.class, () -> c.registrarSucursal(repetida));
     }
+
     @Test
-    public void registrarYBuscarAsociado(){
-    Cooperativa c = crearSucursal();
-    Sucursal s = c.buscarSucursal("S01");
-    c.registrarAsociado(new Asociado("1-111-1111", "Ana Mora", "A001", s));
-    assertNotNull(c.buscarAsociado("1-111-1111"));
-    
+    public void registrarYBuscarAsociado() {
+        Cooperativa c = crearSucursal();
+        Sucursal s = c.buscarSucursal("S01");
+        c.registrarAsociado(new Asociado("1-111-1111", "Ana Mora", "A001", s));
+        assertNotNull(c.buscarAsociado("1-111-1111"));
+
     }
+
     @Test
     public void cedulaDuplicadaFalla() {
         Cooperativa c = crearSucursal();
@@ -49,16 +50,17 @@ public class CooperativaTest {
         c.registrarAsociado(new Asociado("1-1111-1111", "Ana Mora", "A001", s));
         Asociado repetido = new Asociado("1-1111-1111", "Otra", "A002", s);
         assertThrows(IllegalArgumentException.class, () -> c.registrarAsociado(repetido));
-    
-}
-     @Test
+
+    }
+
+    @Test
     public void sucursalNoRegistradaFalla() {
         Cooperativa c = crearSucursal();
         Asociado a = new Asociado("2-2222-2222", "Luis Rojas", "A003",
                 new Sucursal("S99", "Fantasma"));
         assertThrows(IllegalArgumentException.class, () -> c.registrarAsociado(a));
     }
-    
+
     @Test
     public void depositarAporteActualizaElSaldo() {
         Cooperativa c = crearSucursal();
@@ -66,6 +68,25 @@ public class CooperativaTest {
         c.registrarAsociado(new Asociado("1-1111-1111", "Ana Mora", "A001", s));
         c.depositarAporte("1-1111-1111", 3000);
         assertEquals(3000, c.buscarAsociado("1-1111-1111").getSaldoAportes(), 0.001);
+    }
+
+    @Test
+    public void retiroValidoRestaDelSaldo() {
+        Cooperativa c = crearSucursal();
+        Sucursal s = c.buscarSucursal("S01");
+        c.registrarAsociado(new Asociado("1-1111-1111", "Ana Mora", "A001", s));
+        c.depositarAporte("1-1111-1111", 3000);
+        c.retirarAporte("1-1111-1111", 1000);
+        assertEquals(2000, c.buscarAsociado("1-1111-1111").getSaldoAportes(), 0.001);
+    }
+
+    @Test
+    public void retiroMayorAlSaldoFalla() {
+        Cooperativa c = crearSucursal();
+        Sucursal s = c.buscarSucursal("S01");
+        c.registrarAsociado(new Asociado("1-1111-1111", "Ana Mora", "A001", s));
+        c.depositarAporte("1-1111-1111", 500);
+        assertThrows(IllegalArgumentException.class, () -> c.retirarAporte("1-1111-1111", 800));
     }
 
     @Test
