@@ -78,6 +78,9 @@ public class VentanaPrincipal extends JFrame {
 });
         panel.add(titulo);
         panel.add(lblResumen);
+        JButton btnSucursales = new JButton("Sucursales");
+        btnSucursales.addActionListener(e -> new VentanaSucursales(this, cooperativa).setVisible(true));
+        panel.add(btnSucursales);
         panel.add(btnGuardar);
         panel.add(btnSalir);
 
