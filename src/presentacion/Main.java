@@ -9,7 +9,7 @@ import logica.Cooperativa;
 /**
  * Punto de entrada del sistema CoopeTica R.L.
  */
-public class MAIN {
+public class Main {
 
     /**
      * Carga los datos guardados y abre la ventana principal.
