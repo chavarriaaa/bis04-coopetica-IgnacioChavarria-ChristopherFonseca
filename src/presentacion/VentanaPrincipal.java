@@ -70,6 +70,9 @@ public class VentanaPrincipal extends JFrame {
     
         JButton btnSalir = new JButton("Guardar y salir");
         btnSalir.addActionListener(e -> guardarYSalir());
+        JButton btnAportes = new JButton("Aportes");
+        btnAportes.addActionListener(e -> new VentanaAportes(this, cooperativa).setVisible(true));
+        panel.add(btnAportes);
         btnGuardar.addActionListener(e -> {
         if (guardar()) {
         JOptionPane.showMessageDialog(this, "Los datos se guardaron correctamente.",
