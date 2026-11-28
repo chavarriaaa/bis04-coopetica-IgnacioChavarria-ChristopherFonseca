@@ -1,4 +1,4 @@
-package modelo;
+package logica;
 
 /**
  * Define una estrategia para calcular los intereses de un préstamo.

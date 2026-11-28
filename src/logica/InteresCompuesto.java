@@ -1,4 +1,6 @@
-package modelo;
+package logica;
+
+import logica.PoliticaInteres;
 
 /**
  * Calcula el interés compuesto capitalizado mensualmente para un préstamo.

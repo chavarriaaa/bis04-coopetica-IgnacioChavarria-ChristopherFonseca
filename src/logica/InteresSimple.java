@@ -1,4 +1,6 @@
-package modelo;
+package logica;
+
+import logica.PoliticaInteres;
 
 /**
  * Calcula el interés simple para un préstamo.
